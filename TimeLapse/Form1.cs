@@ -54,6 +54,8 @@ namespace TimeLapse
                         / (int)numInterval.Value
                     ),100);
 
+                TaskbarIconProgress.SetValue(this.Handle, pbInterval.Value, pbInterval.Maximum);
+
                 if (dateOfnewSave > lasTimeSaved + snapInterval) {
                     saveCounter++;
                     string file = txtSavePath.Text
@@ -98,12 +100,18 @@ namespace TimeLapse
             snapInterval = TimeSpan.FromSeconds((int)numInterval.Value);
             takePictures = true;
             startClick.send();
+            
+            // Show taskbar icon process is "in progress"
+            TaskbarIconProgress.SetState(this.Handle, TaskbarIconProgress.TaskbarStates.Indeterminate);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             takePictures = false;
             stopClick.send();
+
+            // Show taskbar icon process is "in progress"
+            TaskbarIconProgress.SetState(this.Handle, TaskbarIconProgress.TaskbarStates.NoProgress);
         }
 
         GoogleAnalytics.gaScreenView myScreen;
